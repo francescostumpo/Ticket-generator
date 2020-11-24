@@ -1,0 +1,40 @@
+<html>
+
+<body>
+<h1>Index.html</h1>
+
+
+<button onClick="print()">Print</button>
+</body>
+
+<script>
+
+	function reqListener () {
+	  console.log(this.responseText);
+	}
+
+
+	function print(){
+		var oReq = new XMLHttpRequest();
+		
+		oReq.onload = function(e) {
+		  console.log(this.response)
+		  var file = new Blob([this.response], {type: 'image/png'});
+		  	var url = window.URL || window.webkitURL;
+	        var element = document.createElement('a');
+	        element.setAttribute('href', url.createObjectURL(file));
+	        element.setAttribute('download', "tickets.png");
+	
+	        element.style.display = 'none';
+	        document.body.appendChild(element);
+	        element.click();
+	        document.body.removeChild(element);
+		}
+		
+		oReq.responseType = "arraybuffer";
+		oReq.open("GET", "http://localhost:9090/tickets/generateMultipleTicketsIS");
+		oReq.send();
+	
+	}
+</script>
+</html>
